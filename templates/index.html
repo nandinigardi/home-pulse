@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePlus Dashboard | Smart Intelligence</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .mode-selector {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 100px;
+            display: inline-flex;
+            gap: 0.25rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .mode-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px var(--primary-glow);
+        }
+
+        .sensor-card {
+            background-size: cover !important;
+            background-position: center !important;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .sensor-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.95));
+            z-index: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .sim-overlay {
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .sim-overlay.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+            filter: grayscale(1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-blobs"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-logo">
+            <i data-lucide="zap" size="32" style="color: var(--primary)"></i> HomePlus
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; align-items: center;">
+            <nav style="display: flex; gap: 1rem; margin-right: 1.5rem;">
+                <button class="mode-btn active" id="nav-dash" onclick="switchView('dash')">DASHBOARD</button>
+                <button class="mode-btn" id="nav-analytics" onclick="switchView('analytics')">ANALYTICS</button>
+                <button class="mode-btn" id="nav-history" onclick="switchView('history')">HISTORY LOG</button>
+            </nav>
+            <div class="mode-selector">
+                <button class="mode-btn active" id="mode-auto" onclick="setMode('auto')">LIVE AUTO</button>
+                <button class="mode-btn" id="mode-manual" onclick="setMode('manual')">SIMULATION</button>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 2rem; align-items: center;">
+            <div style="text-align: right">
+                <div style="font-weight: 700; font-size: 0.9rem;">{{ user }}</div>
+                <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Primary Admin</div>
+            </div>
+            <a href="/api/logout" class="sensor-icon-wrapper"
+                style="width: 44px; height: 44px; margin-bottom: 0; border-radius: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                <i data-lucide="log-out" size="18"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Dashboard View -->
+        <div id="view-dash">
+            <div class="sensor-grid">
+
+                <div class="sensor-grid">
+
+                    <!-- Hero Room Preview -->
+                    <div class="room-preview"
+                        style="background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=2158') center/cover;">
+                        <div class="preview-overlay"
+                            style="background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(255, 255, 255, 0.9)); backdrop-filter: blur(5px);">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <span
+                                    style="width: 8px; height: 8px; background: #6BCF7F; border-radius: 50%; display: inline-block;"></span>
+                                <span
+                                    style="font-size: 0.75rem; font-weight: 700; color: #2D3748; letter-spacing: 2px;">SYSTEMS
+                                    ONLINE</span>
+                            </div>
+                            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #2D3748;">
+                                Smart Living Estate
+                            </h2>
+                            <p style="color: #4A5568; font-size: 1.1rem;">Full neurological atmosphere synchronization
+                                is now active across all 12 zones.</p>
+                        </div>
+                    </div>
+
+                    <!-- Temperature (Living Room focus) -->
+                    <div class="sensor-card"
+                        style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 247, 0.9)), url('https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80&w=2070') center/cover;">
+                        <div class="card-content">
+                            <div class="sensor-icon-wrapper" style="box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);">
+                                <i data-lucide="thermometer" style="color: #FF6B6B;"></i>
+                            </div>
+                            <h3
+                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Climate Node</h3>
+                            <div class="value-container">
+                                <span id="val-temp" class="sensor-value" style="color: #2D3748;">--</span>
+                                <span class="sensor-unit" style="color: #718096;">°C</span>
+                            </div>
+                            <div class="control-panel sim-overlay disabled" id="sim-temp-panel">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; color: #4A5568;">
+                                    <span>Manual Calibration</span>
+                                    <span id="sim-temp-val" style="color: #FF6B6B; font-weight: 700;">24°C</span>
+                                </div>
+                                <input type="range" id="sim-temp" min="15" max="45" value="24" step="0.5"
+                                    style="accent-color: #FF6B6B;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Light (Bedroom / Ambient focus) -->
+                    <div class="sensor-card"
+                        style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 235, 0.9)), url('https://images.unsplash.com/photo-1543503103-62548cb36db8?auto=format&fit=crop&q=80&w=2070') center/cover;">
+                        <div class="card-content">
+                            <div class="sensor-icon-wrapper"
+                                style="background: white; color: #FFA07A; box-shadow: 0 10px 30px rgba(255, 160, 122, 0.3);">
+                                <i data-lucide="sun-medium"></i>
+                            </div>
+                            <h3
+                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Ambient Flux</h3>
+                            <div class="value-container">
+                                <span id="val-light" class="sensor-value" style="color: #2D3748;">--</span>
+                                <span class="sensor-unit" style="color: #718096;">lx</span>
+                            </div>
+                            <div class="control-panel sim-overlay disabled" id="sim-light-panel">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; color: #4A5568;">
+                                    <span>Override Luminosity</span>
+                                    <span id="sim-light-val" style="color: #FFA07A; font-weight: 700;">400
+                                        lx</span>
+                                </div>
+                                <input type="range" id="sim-light" min="0" max="1000" value="400"
+                                    style="accent-color: #FFA07A;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gas (Kitchen focus) -->
+                    <div class="sensor-card"
+                        style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(235, 255, 250, 0.9)), url('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=2070') center/cover;">
+                        <div class="card-content">
+                            <div class="sensor-icon-wrapper"
+                                style="background: white; color: #4ECDC4; box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);">
+                                <i data-lucide="wind"></i>
+                            </div>
+                            <h3
+                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Atmosphere Purity</h3>
+                            <div class="value-container">
+                                <span id="val-gas" class="sensor-value" style="color: #2D3748;">--</span>
+                                <span class="sensor-unit" style="color: #718096;">PPM</span>
+                            </div>
+                            <div class="control-panel sim-overlay disabled" id="sim-gas-panel">
+                                <div
+                                    style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.5rem; color: #4A5568;">
+                                    <span>Inject Gas Pattern</span>
+                                    <span id="sim-gas-val" style="color: #4ECDC4; font-weight: 700;">30
+                                        PPM</span>
+                                </div>
+                                <input type="range" id="sim-gas" min="0" max="500" value="30"
+                                    style="accent-color: #4ECDC4;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Motion (Security focus) -->
+                    <div class="sensor-card"
+                        style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 240, 255, 0.9)), url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=2070') center/cover;">
+                        <div class="card-content">
+                            <div class="sensor-icon-wrapper"
+                                style="background: white; color: #C77DFF; box-shadow: 0 10px 30px rgba(199, 125, 255, 0.3);">
+                                <i data-lucide="scan-eye"></i>
+                            </div>
+                            <h3
+                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                Sentinel Matrix</h3>
+                            <div class="value-container">
+                                <span id="val-motion" class="sensor-value"
+                                    style="font-size: 3rem; color: #2D3748;">STATIC</span>
+                            </div>
+                            <div class="control-panel sim-overlay disabled" id="sim-motion-panel">
+                                <div style="display: flex; gap: 1rem;">
+                                    <button class="login-input sim-motion" data-state="0"
+                                        style="flex: 1; margin: 0; padding: 0.75rem; font-size: 0.8rem; background: #e0e0e0; color: #4a5568;">SECURE</button>
+                                    <button class="login-input sim-motion" data-state="1"
+                                        style="flex: 1; margin: 0; padding: 0.75rem; font-size: 0.8rem; background: #C77DFF; color: white;">TRIGGER</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Device Control Strip -->
+                    <div class="device-strip">
+                        <div class="device-pill" id="pill-fan">
+                            <div class="pill-info">
+                                <i data-lucide="fan" size="24"></i>
+                                <div>
+                                    <div style="font-size: 0.7rem; opacity: 0.6;">CLIMATE</div>
+                                    <div style="font-weight: 800;">COOLING FAN</div>
+                                </div>
+                            </div>
+                            <span class="status-text" id="state-fan">OFFLINE</span>
+                        </div>
+
+                        <div class="device-pill" id="pill-lights">
+                            <div class="pill-info">
+                                <i data-lucide="lightbulb" size="24"></i>
+                                <div>
+                                    <div style="font-size: 0.7rem; opacity: 0.6;">AMBIENCE</div>
+                                    <div style="font-weight: 800;">SMART LIGHTS</div>
+                                </div>
+                            </div>
+                            <span class="status-text" id="state-lights">OFFLINE</span>
+                        </div>
+
+                        <div class="device-pill" id="pill-alarm">
+                            <div class="pill-info">
+                                <i data-lucide="shield-alert" size="24"></i>
+                                <div>
+                                    <div style="font-size: 0.7rem; opacity: 0.6;">SECURITY</div>
+                                    <div style="font-weight: 800;">ALERT SYSTEM</div>
+                                </div>
+                            </div>
+                            <span class="status-text" id="state-alarm">OFFLINE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="view-analytics" style="display: none;">
+            <div class="sensor-card" style="min-height: auto; padding: 2rem;">
+                <div class="card-content" style="width: 100%;">
+                    <div style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 2rem; font-weight: 800; color: var(--primary);">Advanced Analytics</h2>
+                        <p style="color: var(--text-muted);">Comprehensive environmental trend analysis.</p>
+                    </div>
+                    <div style="width: 100%; height: 500px; position: relative;">
+                        <canvas id="neuralChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History View (Hidden by default) -->
+        <div id="view-history" style="display: none;">
+            <div class="sensor-card" style="min-height: auto; padding: 3rem;">
+                <div class="card-content" style="width: 100%;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+                        <div>
+                            <h2 style="font-size: 2.3rem; font-weight: 800; color: var(--primary);">System History Log
+                            </h2>
+                            <p style="color: var(--text-muted); font-size: 1rem;">Detailed archive of environmental
+                                events and alerts.</p>
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div id="status-climate"
+                                style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">
+                                <span style="opacity: 0.6; margin-right: 5px;">CLIMATE:</span> <span
+                                    id="stat-val-climate" style="font-weight: 800; color: var(--primary);">STABLE</span>
+                            </div>
+                            <div id="status-atmosphere"
+                                style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">
+                                <span style="opacity: 0.6; margin-right: 5px;">ATMOSPHERE:</span> <span
+                                    id="stat-val-atmosphere"
+                                    style="font-weight: 800; color: var(--success);">STABLE</span>
+                            </div>
+                            <div id="status-sentinel"
+                                style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.8rem;">
+                                <span style="opacity: 0.6; margin-right: 5px;">SENTINEL:</span> <span
+                                    id="stat-val-sentinel" style="font-weight: 800; color: var(--warning);">CLEAR</span>
+                            </div>
+                            <button class="login-input" onclick="window.location.reload()"
+                                style="width: auto; margin-top:0; padding: 0.75rem 1.5rem; background: var(--primary); font-size: 0.8rem; border: none; cursor: pointer;">
+                                <i data-lucide="refresh-cw" size="14"
+                                    style="vertical-align: middle; margin-right: 5px;"></i> REFRESH
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead
+                                style="border-bottom: 2px solid var(--glass-border); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">
+                                <tr>
+                                    <th style="padding: 1.5rem 1rem;">Timestamp</th>
+                                    <th style="padding: 1rem;">Log Event</th>
+                                    <th style="padding: 1.5rem 1rem;">Thermal (°C)</th>
+                                    <th style="padding: 1rem;">Flux (lx)</th>
+                                    <th style="padding: 1rem;">Purity (PPM)</th>
+                                    <th style="padding: 1rem;">Motion</th>
+                                    <th style="padding: 1rem;">Node States</th>
+                                    <th style="padding: 1rem;">Neural Warnings</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-body" style="font-size: 0.95rem; font-weight: 500;">
+                                <!-- History rows handled by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

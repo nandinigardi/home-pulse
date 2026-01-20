@@ -1,0 +1,18 @@
+{
+    "admin": {
+        "password": "password",
+        "role": "Admin"
+    },
+    "viewer": {
+        "password": "guest",
+        "role": "Viewer"
+    },
+    "nandini": {
+        "password": "nandini123",
+        "role": "Admin"
+    },
+    "firdos": {
+        "password": "firdos123",
+        "role": "User"
+    }
+}

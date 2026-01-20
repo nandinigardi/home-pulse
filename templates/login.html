@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePlus | Future Living</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="login-wrapper">
+    <div class="bg-blobs"></div>
+
+    <div class="login-card">
+        <div class="nav-logo" style="justify-content: center; margin-bottom: 0.5rem; font-size: 2.5rem;">
+            <i data-lucide="shield-check" size="40" style="color: var(--primary)"></i> HomePlus
+        </div>
+        <p id="form-subtitle" style="color: var(--text-muted); margin-bottom: 2rem; font-weight: 500;">Secure IoT
+            Authentication Engine</p>
+
+        <!-- Login Form -->
+        <form id="login-form">
+            <input type="text" id="username" class="login-input" placeholder="Neural ID (Username)" required>
+            <input type="password" id="password" class="login-input" placeholder="Pass-Phase (Password)" required>
+            <button type="submit" class="login-input"
+                style="background: var(--primary); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 1rem; box-shadow: 0 10px 20px var(--primary-glow);">
+                AUTHORIZE ACCESS
+            </button>
+            <p style="font-size: 0.85rem; margin-top: 1.5rem; color: var(--text-muted);">
+                New unit? <a href="#" onclick="toggleForm('signup')"
+                    style="color: var(--primary); font-weight: 700; text-decoration: none;">Register ID</a>
+            </p>
+        </form>
+
+        <!-- Signup Form (Hidden) -->
+        <form id="signup-form" style="display: none;">
+            <input type="text" id="reg-username" class="login-input" placeholder="Desired Neural ID" required>
+            <input type="password" id="reg-password" class="login-input" placeholder="New Pass-Phase" required>
+            <button type="submit" class="login-input"
+                style="background: var(--secondary); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 1rem; box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);">
+                INITIATE REGISTRATION
+            </button>
+            <p style="font-size: 0.85rem; margin-top: 1.5rem; color: var(--text-muted);">
+                Returning? <a href="#" onclick="toggleForm('login')"
+                    style="color: var(--secondary); font-weight: 700; text-decoration: none;">Login instead</a>
+            </p>
+        </form>
+
+        <div id="status-msg" style="font-size: 0.85rem; margin-top: 1.5rem; display: none;"></div>
+
+        <p style="font-size: 0.75rem; color: var(--text-muted); opacity: 0.5; margin-top: 3rem;">
+            SYSTEM v4.0.2 // ENCRYPTED NODE 12-B
+        </p>
+    </div>
+
+    <script>
+        function toggleForm(type) {
+            const loginForm = document.getElementById('login-form');
+            const signupForm = document.getElementById('signup-form');
+            const subtitle = document.getElementById('form-subtitle');
+
+            if (type === 'signup') {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                subtitle.textContent = 'Register New IoT Terminal';
+            } else {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                subtitle.textContent = 'Secure IoT Authentication Engine';
+            }
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const msgEl = document.getElementById('status-msg');
+
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (res.ok) {
+                window.location.reload();
+            } else {
+                msgEl.textContent = 'Access Denied: Invalid Neural Credentials';
+                msgEl.style.color = 'var(--danger)';
+                msgEl.style.display = 'block';
+            }
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const msgEl = document.getElementById('status-msg');
+
+            const res = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                msgEl.textContent = 'Registration Complete. You can now login.';
+                msgEl.style.color = 'var(--success)';
+                msgEl.style.display = 'block';
+                toggleForm('login');
+            } else {
+                msgEl.textContent = data.message || 'Registration Failed';
+                msgEl.style.color = 'var(--danger)';
+                msgEl.style.display = 'block';
+            }
+        });
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,577 @@
+:root {
+    --primary: #FF6B9D;
+    --primary-glow: rgba(255, 107, 157, 0.4);
+    --secondary: #4ECDC4;
+    --success: #45B7D1;
+    --warning: #FFA07A;
+    --danger: #FF6B6B;
+    --accent-purple: #C77DFF;
+    --accent-yellow: #FFD93D;
+    --accent-green: #6BCF7F;
+    --bg-light: #F8F9FF;
+    --bg-gradient-1: #FFF5F7;
+    --bg-gradient-2: #E8F4F8;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 107, 157, 0.2);
+    --text: #2D3748;
+    --text-muted: #718096;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #FFF5F7 0%, #E8F4F8 50%, #F0E7FF 100%);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Animated Gradient Background */
+.bg-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255, 107, 157, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(78, 205, 196, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 211, 61, 0.25) 0%, transparent 60%),
+        radial-gradient(circle at 70% 20%, rgba(199, 125, 255, 0.25) 0%, transparent 55%);
+    animation: blob-float 20s ease-in-out infinite;
+}
+
+@keyframes blob-float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+}
+
+/* Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse-glow {
+    0% {
+        box-shadow: 0 0 0 0 var(--primary-glow);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(139, 92, 246, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+    }
+}
+
+/* Login Page Specific */
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 245, 247, 0.95), rgba(232, 244, 248, 0.95)),
+        url('https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=2070') center/cover no-repeat;
+}
+
+.login-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 3rem;
+    border-radius: 32px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.login-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--glass-border);
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+    outline: none;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.login-input:focus {
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Dashboard Layout */
+.dashboard-header {
+    padding: 1.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid white;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF6B9D 0%, #C77DFF 50%, #4ECDC4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.2));
+}
+
+/* Main Cards */
+.main-container {
+    padding: 3rem 4rem;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.sensor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.sensor-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(25px);
+    border: 2px solid white;
+    padding: 2.5rem;
+    border-radius: 32px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sensor-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: white;
+    box-shadow: var(--shadow-lg), 0 0 40px rgba(255, 107, 157, 0.15);
+}
+
+.sensor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 1;
+    z-index: 0;
+}
+
+.sensor-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    background: white;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    color: var(--primary);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.sensor-card:hover .sensor-icon-wrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Value Display */
+.value-container {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+.sensor-value {
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--text);
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+}
+
+.sensor-unit {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Control UI */
+.control-panel {
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 2;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    outline: none;
+    margin: 1rem 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    background: white;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Device Status Icons */
+.device-strip {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.device-pill {
+    flex: 1;
+    background: white;
+    border: 1px solid white;
+    padding: 1.5rem 2rem;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+    color: var(--text);
+}
+
+.device-pill.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+    transform: translateY(-5px);
+}
+
+.device-pill.active .status-text {
+    color: white;
+}
+
+.pill-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-text {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Toast Alerts */
+#toast-container {
+    position: fixed;
+    top: 5rem;
+    right: 4rem;
+    z-index: 1000;
+}
+
+.modern-toast {
+    background: white;
+    backdrop-filter: blur(20px);
+    border-left: 6px solid var(--primary);
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: 500;
+    color: var(--text);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-left-width: 6px;
+    animation: fadeIn 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+/* Custom Room Images Card */
+.room-preview {
+    grid-column: span 2;
+    height: 350px;
+    border-radius: 32px;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3rem;
+    background: linear-gradient(transparent, rgba(2, 6, 23, 0.9));
+}
+
+@media (max-width: 1024px) {
+    .dashboard-header {
+        padding: 1.5rem 2rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .main-container {
+        padding: 2rem;
+    }
+
+    .room-preview {
+        grid-column: 1 / -1;
+        height: 280px;
+    }
+
+    .sensor-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .device-strip {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .sensor-value {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .dashboard-header>div {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nav-logo {
+        font-size: 1.5rem;
+        justify-content: center;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav button,
+    .mode-btn {
+        font-size: 0.7rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .mode-selector {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .main-container {
+        padding: 1rem;
+    }
+
+    .sensor-grid {
+        gap: 1rem;
+    }
+
+    .sensor-card {
+        padding: 1.5rem;
+        border-radius: 24px;
+    }
+
+    .sensor-value {
+        font-size: 2.8rem;
+    }
+
+    .sensor-unit {
+        font-size: 1.2rem;
+    }
+
+    .sensor-icon-wrapper {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .preview-overlay {
+        padding: 1.5rem;
+    }
+
+    .preview-overlay h2 {
+        font-size: 1.5rem;
+    }
+
+    .preview-overlay p {
+        font-size: 0.9rem;
+    }
+
+    .room-preview {
+        height: 220px;
+    }
+
+    #toast-container {
+        right: 0.5rem;
+        left: 0.5rem;
+        top: auto;
+        bottom: 1rem;
+    }
+
+    .modern-toast {
+        padding: 1rem;
+        font-size: 0.85rem;
+        border-radius: 16px;
+    }
+
+    /* History Table Mobile */
+    table {
+        font-size: 0.8rem;
+    }
+
+    table th,
+    table td {
+        padding: 0.75rem 0.5rem !important;
+    }
+
+    /* Device Pills Mobile */
+    .device-pill {
+        padding: 1rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .pill-info {
+        gap: 0.75rem;
+    }
+
+    .status-text {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-logo {
+        font-size: 1.3rem;
+    }
+
+    nav button,
+    .mode-btn {
+        font-size: 0.65rem;
+        padding: 0.35rem 0.8rem;
+    }
+
+    .sensor-value {
+        font-size: 2.5rem;
+    }
+
+    .sensor-card {
+        padding: 1.2rem;
+    }
+
+    .control-panel {
+        padding: 1rem;
+    }
+
+    .login-card {
+        padding: 2rem;
+        border-radius: 24px;
+    }
+
+    table th,
+    table td {
+        padding: 0.5rem 0.3rem !important;
+        font-size: 0.75rem;
+    }
+}
