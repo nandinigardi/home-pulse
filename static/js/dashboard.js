@@ -16,9 +16,9 @@ function initSimChart() {
         data: {
             labels: Array(20).fill(''),
             datasets: [
-                { label: 'Temp', data: Array(20).fill(0), borderColor: '#8b5cf6', borderWidth: 2, tension: 0.4, pointRadius: 0, fill: true, backgroundColor: 'rgba(139, 92, 246, 0.05)' },
-                { label: 'Light', data: Array(20).fill(0), borderColor: '#f59e0b', borderWidth: 1, tension: 0.4, pointRadius: 0 },
-                { label: 'Gas', data: Array(20).fill(0), borderColor: '#10b981', borderWidth: 1, tension: 0.4, pointRadius: 0 }
+                { label: 'Temp', data: Array(20).fill(0), borderColor: '#EF4444', borderWidth: 2, tension: 0.4, pointRadius: 0, fill: true, backgroundColor: 'rgba(239, 68, 68, 0.05)' },
+                { label: 'Light', data: Array(20).fill(0), borderColor: '#F59E0B', borderWidth: 1, tension: 0.4, pointRadius: 0 },
+                { label: 'Gas', data: Array(20).fill(0), borderColor: '#10B981', borderWidth: 1, tension: 0.4, pointRadius: 0 }
             ]
         },
         options: {
@@ -57,10 +57,10 @@ function initChart() {
                 {
                     label: 'Climate Node (°C)',
                     data: [],
-                    borderColor: '#FF6B9D',
-                    backgroundColor: createGradient('rgba(255, 107, 157, 0.2)', 'rgba(255, 107, 157, 0)'),
-                    borderWidth: 4,
-                    pointBackgroundColor: '#FF6B9D',
+                    borderColor: '#EF4444', // Red for Temp
+                    backgroundColor: createGradient('rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0)'),
+                    borderWidth: 3,
+                    pointBackgroundColor: '#EF4444',
                     pointBorderColor: 'white',
                     pointHoverRadius: 6,
                     tension: 0.4,
@@ -70,9 +70,9 @@ function initChart() {
                 {
                     label: 'Ambient Flux (lx)',
                     data: [],
-                    borderColor: '#FFA07A',
-                    backgroundColor: createGradient('rgba(255, 160, 122, 0.1)', 'rgba(255, 160, 122, 0)'),
-                    borderWidth: 3,
+                    borderColor: '#F59E0B', // Amber
+                    backgroundColor: createGradient('rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0)'),
+                    borderWidth: 2,
                     borderDash: [5, 5],
                     pointRadius: 0,
                     tension: 0.4,
@@ -81,8 +81,8 @@ function initChart() {
                 {
                     label: 'Atmosphere Purity (PPM)',
                     data: [],
-                    borderColor: '#4ECDC4',
-                    borderWidth: 3,
+                    borderColor: '#10B981', // Emerald
+                    borderWidth: 2,
                     pointRadius: 0,
                     tension: 0.4,
                     yAxisID: 'y2'
@@ -159,9 +159,9 @@ function showNotification(title, msg, type = 'primary') {
     toast.className = 'modern-toast';
 
     const colors = {
-        primary: '#FF6B9D',
-        warning: '#FFA07A',
-        danger: '#FF6B6B'
+        primary: '#4F46E5', // Indigo
+        warning: '#F59E0B', // Amber
+        danger: '#EF4444'   // Red
     };
 
     toast.style.borderColor = colors[type];

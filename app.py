@@ -6,6 +6,7 @@ import io
 import csv
 import json
 import os
+import requests # Added for SMS and Ntfy
 from datetime import datetime
 
 app = Flask(__name__)
@@ -37,6 +38,36 @@ app_state = {
     },
     "history": [] # Store last 50 readings
 }
+
+# Notification System
+alert_cooldowns = {}
+
+def send_notification(title, message):
+    """Sends a push notification to mobile via ntfy.sh (Free API)"""
+    try:
+        # User opted for Ntfy App
+        topic = "home-pulse-alerts-nandini" 
+        
+        # Cooldown check
+        last_time = alert_cooldowns.get(title, 0)
+        current_time = time.time()
+        
+        if current_time - last_time < 60:
+            return
+
+        # Send to Ntfy (Web/App)
+        requests.post(f"https://ntfy.sh/{topic}", 
+            data=message.encode('utf-8'),
+            headers={"Title": title, "Priority": "high", "Tags": "warning,sensor"},
+            timeout=2
+        )
+        
+        # Update cooldown
+        alert_cooldowns[title] = current_time
+        print(f"Notification Sent: {title}")
+        
+    except Exception as e:
+        print(f"Notification Error: {e}")
 
 sensor_data = {
     "temperature": 24.0,
@@ -79,6 +110,7 @@ def simulate_sensors(event_desc="AUTO DRIFT"):
     if sensor_data["temperature"] > 35: 
         msg = f"Thermal Hazard: Heat Spike At {sensor_data['temperature']}°C"
         current_alerts.append(msg)
+        send_notification("Thermal Hazard", msg)
         app_state["history"].append({
             "timestamp": now_str,
             "event": "SAFETY ALERT",
@@ -89,6 +121,7 @@ def simulate_sensors(event_desc="AUTO DRIFT"):
     if sensor_data["gas"] > 200: 
         msg = f"Atmosphere Danger: Gas At {sensor_data['gas']} PPM"
         current_alerts.append(msg)
+        send_notification("Gas Leak", msg)
         app_state["history"].append({
             "timestamp": now_str,
             "event": "SAFETY ALERT",
@@ -99,6 +132,7 @@ def simulate_sensors(event_desc="AUTO DRIFT"):
     if sensor_data["motion"] == 1: 
         msg = "Sentinel Breach: Unauthorized Motion"
         current_alerts.append(msg)
+        send_notification("Security Alert", msg)
         app_state["history"].append({
             "timestamp": now_str,
             "event": "SAFETY ALERT",
@@ -109,6 +143,7 @@ def simulate_sensors(event_desc="AUTO DRIFT"):
     if sensor_data["light"] < 100:
         msg = f"Luminosity Low: Ambient {sensor_data['light']} lx"
         current_alerts.append(msg)
+        send_notification("Sensor Warning", msg)
         app_state["history"].append({
             "timestamp": now_str,
             "event": "SAFETY ALERT",

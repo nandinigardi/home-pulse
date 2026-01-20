@@ -50,7 +50,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.95));
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.95));
             z-index: 1;
         }
 
@@ -114,18 +114,20 @@
                     <div class="room-preview"
                         style="background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=2158') center/cover;">
                         <div class="preview-overlay"
-                            style="background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(255, 255, 255, 0.9)); backdrop-filter: blur(5px);">
+                            style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.98)); backdrop-filter: blur(8px); border-radius: 24px; margin: 1.5rem; width: auto;">
                             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                                 <span
-                                    style="width: 8px; height: 8px; background: #6BCF7F; border-radius: 50%; display: inline-block;"></span>
+                                    style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; display: inline-block;"></span>
                                 <span
-                                    style="font-size: 0.75rem; font-weight: 700; color: #2D3748; letter-spacing: 2px;">SYSTEMS
+                                    style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 2px;">SYSTEMS
                                     ONLINE</span>
                             </div>
-                            <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; color: #2D3748;">
+                            <h2
+                                style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text); letter-spacing: -1px;">
                                 Smart Living Estate
                             </h2>
-                            <p style="color: #4A5568; font-size: 1.1rem;">Full neurological atmosphere synchronization
+                            <p style="color: var(--text-muted); font-size: 1rem;">Full neurological atmosphere
+                                synchronization
                                 is now active across all 12 zones.</p>
                         </div>
                     </div>
@@ -134,11 +136,11 @@
                     <div class="sensor-card"
                         style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 247, 0.9)), url('https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&q=80&w=2070') center/cover;">
                         <div class="card-content">
-                            <div class="sensor-icon-wrapper" style="box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);">
-                                <i data-lucide="thermometer" style="color: #FF6B6B;"></i>
+                            <div class="sensor-icon-wrapper" style="color: var(--danger);">
+                                <i data-lucide="thermometer"></i>
                             </div>
                             <h3
-                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
                                 Climate Node</h3>
                             <div class="value-container">
                                 <span id="val-temp" class="sensor-value" style="color: #2D3748;">--</span>
@@ -160,12 +162,11 @@
                     <div class="sensor-card"
                         style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 250, 235, 0.9)), url('https://images.unsplash.com/photo-1543503103-62548cb36db8?auto=format&fit=crop&q=80&w=2070') center/cover;">
                         <div class="card-content">
-                            <div class="sensor-icon-wrapper"
-                                style="background: white; color: #FFA07A; box-shadow: 0 10px 30px rgba(255, 160, 122, 0.3);">
+                            <div class="sensor-icon-wrapper" style="background: white; color: var(--warning);">
                                 <i data-lucide="sun-medium"></i>
                             </div>
                             <h3
-                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
                                 Ambient Flux</h3>
                             <div class="value-container">
                                 <span id="val-light" class="sensor-value" style="color: #2D3748;">--</span>
@@ -188,12 +189,11 @@
                     <div class="sensor-card"
                         style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(235, 255, 250, 0.9)), url('https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=2070') center/cover;">
                         <div class="card-content">
-                            <div class="sensor-icon-wrapper"
-                                style="background: white; color: #4ECDC4; box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);">
+                            <div class="sensor-icon-wrapper" style="background: white; color: var(--success);">
                                 <i data-lucide="wind"></i>
                             </div>
                             <h3
-                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
                                 Atmosphere Purity</h3>
                             <div class="value-container">
                                 <span id="val-gas" class="sensor-value" style="color: #2D3748;">--</span>
@@ -216,12 +216,11 @@
                     <div class="sensor-card"
                         style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 240, 255, 0.9)), url('https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=2070') center/cover;">
                         <div class="card-content">
-                            <div class="sensor-icon-wrapper"
-                                style="background: white; color: #C77DFF; box-shadow: 0 10px 30px rgba(199, 125, 255, 0.3);">
+                            <div class="sensor-icon-wrapper" style="background: white; color: var(--accent-purple);">
                                 <i data-lucide="scan-eye"></i>
                             </div>
                             <h3
-                                style="color: #718096; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">
+                                style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
                                 Sentinel Matrix</h3>
                             <div class="value-container">
                                 <span id="val-motion" class="sensor-value"
